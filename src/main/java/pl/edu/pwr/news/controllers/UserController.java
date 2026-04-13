@@ -19,6 +19,7 @@ public class UserController {
     }
 
     // naprawić userów
+
     @GetMapping
     @JsonView(Views.UserView.class)
     public List<User> getAllUsers() {
