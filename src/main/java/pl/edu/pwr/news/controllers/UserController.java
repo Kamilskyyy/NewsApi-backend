@@ -18,6 +18,7 @@ public class UserController {
         this.userRepository = userRepository;
     }
 
+    // naprawić userów
     @GetMapping
     @JsonView(Views.UserView.class)
     public List<User> getAllUsers() {
