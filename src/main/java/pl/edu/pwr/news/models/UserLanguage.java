@@ -1,10 +1,7 @@
 package pl.edu.pwr.news.models;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonView;
 import jakarta.persistence.*;
-import pl.edu.pwr.news.views.Views;
 
 @Entity
 @Table(name = "user_languages")
@@ -12,16 +9,13 @@ public class UserLanguage {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @JsonView(Views.UserView.class)
     private int id;
 
     @Column(name = "user_id", insertable = false, updatable = false)
     private int userId;
 
-    @JsonView(Views.UserView.class)
     private String language;
 
-    @JsonView(Views.UserView.class)
     private String abbreviation;
 
     @ManyToOne

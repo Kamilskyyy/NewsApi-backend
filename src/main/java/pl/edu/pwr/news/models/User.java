@@ -1,9 +1,7 @@
 package pl.edu.pwr.news.models;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.fasterxml.jackson.annotation.JsonView;
 import jakarta.persistence.*;
-import pl.edu.pwr.news.views.Views;
 
 import java.util.List;
 
@@ -13,30 +11,24 @@ public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @JsonView(Views.UserView.class)
     private int id;
 
     @Column(unique = true)
-    @JsonView(Views.UserView.class)
     private String email;
 
-    @JsonView(Views.UserView.class)
     private String password;
 
     @Column(unique = true)
-    @JsonView(Views.UserView.class)
     private String name;
 
 
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     @JsonManagedReference
-    @JsonView(Views.UserView.class)
     private List<UserLanguage> languages;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     @JsonManagedReference
-    @JsonView(Views.UserView.class)
     private List<UserKeyword> keywords;
 
 

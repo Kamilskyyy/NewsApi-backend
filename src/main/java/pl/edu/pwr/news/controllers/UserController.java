@@ -1,10 +1,10 @@
 package pl.edu.pwr.news.controllers;
 
-import com.fasterxml.jackson.annotation.JsonView;
 import org.springframework.web.bind.annotation.*;
+import pl.edu.pwr.news.mapper.Mapper;
 import pl.edu.pwr.news.models.User;
 import pl.edu.pwr.news.repository.UserRepository;
-import pl.edu.pwr.news.views.Views;
+import pl.edu.pwr.news.dto.*;
 
 import java.util.List;
 
@@ -18,37 +18,56 @@ public class UserController {
         this.userRepository = userRepository;
     }
 
-    // naprawić userów
+    @GetMapping("/all")
+    public List<UserResponseDTO> getFullAll() {
+        return userRepository.findAll().stream()
+                .map(Mapper::toUserDTO)
+                .toList();
+    }
+
+    @GetMapping("/all/{id}")
+    public UserResponseDTO getFullOne(@PathVariable int id) {
+        User user = userRepository.findById(id).orElseThrow();
+        return Mapper.toUserDTO(user);
+    }
 
     @GetMapping
-    @JsonView(Views.UserView.class)
-    public List<User> getAllUsers() {
-        return userRepository.findAll();
+    public List<UserGet> getAll() {
+        return userRepository.findAll().stream()
+                .map(Mapper::toDTO)
+                .toList();
     }
 
     @GetMapping("/{id}")
-    public User getUser(@PathVariable int id) {
-        return userRepository.findById(id).orElseThrow();
+    public UserGet getOne(@PathVariable int id) {
+        User user = userRepository.findById(id).orElseThrow();
+        return Mapper.toDTO(user);
     }
 
     @PostMapping
-    public User createUser(@RequestBody User user) {
-        return userRepository.save(user);
+    public UserResponseDTO create(@RequestBody UserCreateDTO dto) {
+        User user = new User();
+
+        user.setEmail(dto.getEmail());
+        user.setPassword(dto.getPassword());
+        user.setName(dto.getName());
+
+        return Mapper.toUserDTO(userRepository.save(user));
     }
 
     @PutMapping("/{id}")
-    public User updateUser(@PathVariable int id, @RequestBody User updatedUser) {
+    public UserResponseDTO update(@PathVariable int id, @RequestBody UserCreateDTO dto) {
         User user = userRepository.findById(id).orElseThrow();
 
-        user.setEmail(updatedUser.getEmail());
-        user.setName(updatedUser.getName());
-        user.setPassword(updatedUser.getPassword());
+        user.setEmail(dto.getEmail());
+        user.setPassword(dto.getPassword());
+        user.setName(dto.getName());
 
-        return userRepository.save(user);
+        return Mapper.toUserDTO(userRepository.save(user));
     }
 
     @DeleteMapping("/{id}")
-    public void deleteUser(@PathVariable int id) {
+    public void delete(@PathVariable int id) {
         userRepository.deleteById(id);
     }
 }
