@@ -1,0 +1,7 @@
+package pl.edu.pwr.news.repository;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+import pl.edu.pwr.news.models.UserKeyword;
+
+public interface UserKeywordRepository extends JpaRepository<UserKeyword, Integer> {
+}
