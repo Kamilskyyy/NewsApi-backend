@@ -18,14 +18,14 @@ public class UserController {
         this.userRepository = userRepository;
     }
 
-    @GetMapping("/all")
+    @GetMapping("/full")
     public List<UserResponseDTO> getFullAll() {
         return userRepository.findAll().stream()
                 .map(Mapper::toUserDTO)
                 .toList();
     }
 
-    @GetMapping("/all/{id}")
+    @GetMapping("/full/{id}")
     public UserResponseDTO getFullOne(@PathVariable int id) {
         User user = userRepository.findById(id).orElseThrow();
         return Mapper.toUserDTO(user);
